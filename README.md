@@ -43,6 +43,7 @@ README.md
 * Firefox
 
 -----------------------------------------------------------------
-##Run to project
+## Run Tests
+
 * npx playwright test ( run all testes )
 * npx playwright test --headed ( run all tests in headed mode )
