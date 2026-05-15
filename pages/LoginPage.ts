@@ -1,25 +1,40 @@
-import { Page, expect } from '@playwright/test';
+import { Locator, Page, expect } from '@playwright/test';
 
 export class LoginPage {
-  constructor(private page: Page) {}
+
+  readonly page: Page;
+  readonly email: Locator;
+  readonly password: Locator;
+  readonly loginButton: Locator;
+  readonly errorMessage: Locator;
+
+  constructor(page: Page) {
+    this.page = page;
+
+    this.email = page.locator('[data-test="email"]');
+    this.password = page.locator('[data-test="password"]');
+    this.loginButton = page.locator('[data-test="login-submit"]');
+    this.errorMessage = page.locator('[data-test="login-error"]');
+  }
 
   async gotoLoginPage() {
     await this.page.goto('/auth/login');
-    await expect(this.page.locator('[data-test="email"]')).toBeVisible();
   }
 
   async login(email: string, password: string) {
-    await this.page.locator('[data-test="email"]').fill(email);
-    await this.page.locator('[data-test="password"]').fill(password);
 
-    const loginButton = this.page.locator('[data-test="login-submit"]');
-    await expect(loginButton).toBeVisible();
-    await loginButton.click();
+    await this.email.fill(email);
+
+    await this.password.fill(password);
+
+    await this.loginButton.click();
   }
 
   async verifyFailedLogin() {
-      await expect(
-      this.page.locator('[data-test="login-error"], .alert, .alert-danger')
-    ).toBeVisible({ timeout: 10000 });
+    await expect(this.errorMessage).toBeVisible();
+  }
+
+    async verifySuccessfulLogin() {
+    await expect(this.page).toHaveURL(/account/);
   }
 }

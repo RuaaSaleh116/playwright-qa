@@ -1,5 +1,17 @@
 import { Page, expect } from '@playwright/test';
 
+type RegisterUser = {
+  firstName: string;
+  lastName: string;
+  dob: string;
+  country: string;
+  postcode: string;
+  houseNumber: string;
+  phone: string;
+  email: string;
+  password: string;
+};
+
 export class RegisterPage {
   constructor(private page: Page) {}
 
@@ -7,18 +19,18 @@ export class RegisterPage {
     await this.page.goto('/auth/register');
   }
 
-  async register(email: string, password: string) {
-    await this.page.locator('[data-test="first-name"]').fill('Ruaa');
-    await this.page.locator('[data-test="last-name"]').fill('Saleh');
-    await this.page.locator('[data-test="dob"]').fill('11/6/2004');
+  async register(user: RegisterUser) {
+    await this.page.locator('[data-test="first-name"]').fill(user.firstName);
+    await this.page.locator('[data-test="last-name"]').fill(user.lastName);
+    await this.page.locator('[data-test="dob"]').fill(user.dob);
 
-    await this.page.locator('[data-test="country"]').selectOption('JO');
-    await this.page.getByPlaceholder('Your Postcode *').fill('11118');
-    await this.page.getByPlaceholder('e.g. 42 *').fill('10');
+    await this.page.locator('[data-test="country"]').selectOption(user.country);
+    await this.page.getByPlaceholder('Your Postcode *').fill(user.postcode);
+    await this.page.getByPlaceholder('e.g. 42 *').fill(user.houseNumber);
 
-    await this.page.locator('[data-test="phone"]').fill('0791234567');
-    await this.page.locator('[data-test="email"]').fill(email);
-    await this.page.locator('[data-test="password"]').fill(password);
+    await this.page.locator('[data-test="phone"]').fill(user.phone);
+    await this.page.locator('[data-test="email"]').fill(user.email);
+    await this.page.locator('[data-test="password"]').fill(user.password);
 
     await this.page.getByRole('button', { name: 'Register' }).click();
   }
