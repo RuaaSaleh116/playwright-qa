@@ -34,3 +34,17 @@ tests/
 playwright.config.ts
 .env
 README.md
+
+-------------------------------------------------------------------
+
+## Browsers Tested
+* Chromium
+* Firefox
+
+-----------------------------------------------------------------
+
+## Run Tests
+* npx playwright test ( run all testes )
+* npx playwright test --headed ( run all tests in headed mode )
+* npx playwright test --project=chromium
+* npx playwright test --project=firefox
